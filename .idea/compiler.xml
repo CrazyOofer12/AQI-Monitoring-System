@@ -6,8 +6,17 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="AQI_Monitor" />
+        <module name="backend" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="AQI_Monitor" target="21" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="AQI_Monitor" options="-parameters" />
+      <module name="backend" options="-parameters" />
+    </option>
   </component>
 </project>
