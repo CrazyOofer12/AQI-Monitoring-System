@@ -36,6 +36,7 @@ public class UserController {
     @PutMapping("id/{myid}/{}")
     public boolean putMapping(@PathVariable Long myid,@RequestBody User user){
         usermap.replace(myid,user);
+        return true;
     }
 
 }
