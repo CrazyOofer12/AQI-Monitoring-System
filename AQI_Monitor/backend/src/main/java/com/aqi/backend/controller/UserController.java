@@ -1,42 +1,67 @@
 package com.aqi.backend.controller;
 
+import com.aqi.backend.model.RegistrationRequest;
+import com.aqi.backend.model.User;
+import com.aqi.backend.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import com.aqi.backend.model.User;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/journal")
+@RequestMapping("/profile")
 public class UserController {
-    private Map<Long,User> usermap = new HashMap<>();
+    @Autowired
+    private UserService userService;
 
     @GetMapping
-    private List<User> getAll(){
-        return new ArrayList<>(usermap.values());
+    private ResponseEntity<?>  getAll(){
+        List<User> l = userService.getAll();
+        if (!l.isEmpty()){
+            return new ResponseEntity<>(l,HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
-    @PostMapping
-    public boolean CreateEntry(@RequestBody User user){
-        usermap.put(user.getId(),user);
-        return true;
+    @PostMapping("/register")
+    public ResponseEntity<?> CreateEntry(@RequestBody RegistrationRequest registrationRequest){
+        try {
+            userService.registerUser(registrationRequest);
+            return new ResponseEntity<>(registrationRequest,HttpStatus.CREATED);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("id/{myid}")
-    public User getContent(@PathVariable Long myid){
-        return usermap.get(myid);
+    public ResponseEntity<?> getContent(@PathVariable String myid){
+        Optional<User> u = userService.findByID(myid);
+        return u.map(user -> new ResponseEntity<>(user, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
     }
 
     @DeleteMapping("id/{myid}")
-    public User deleteMapping(@PathVariable Long myid){
-        return usermap.remove(myid);
+    public ResponseEntity<?> deletebyid(@PathVariable String myid){
+        userService.deleteById(myid);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
     @PutMapping("id/{myid}/{}")
-    public boolean putMapping(@PathVariable Long myid,@RequestBody User user){
-        usermap.replace(myid,user);
-        return true;
+    public ResponseEntity<?>  updateById(@PathVariable String myid, @RequestBody User newUser){
+        User old = userService.findByID(myid).orElse(null);
+        if(old!=null){
+            old.setUsername(newUser.getUsername()!=null && !newUser.getUsername().isEmpty() ?newUser.getUsername(): old.getUsername());
+            old.setUsername(newUser.getPassword()!=null && !newUser.getPassword().isEmpty() ?newUser.getPassword(): old.getPassword());
+            userService.saveUser(old);
+            return new ResponseEntity<>(old,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
 
 }
