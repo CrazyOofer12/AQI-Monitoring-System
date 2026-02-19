@@ -3,6 +3,7 @@ package com.aqi.backend.service;
 import com.aqi.backend.model.RegistrationRequest;
 import com.aqi.backend.model.User;
 import com.aqi.backend.repository.UserRepo;
+import com.mongodb.lang.NonNull;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,22 +38,28 @@ public class UserService {
         }
     }
     public void registerUser(RegistrationRequest request) {
-        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+        if (userRepository.findByUsername(request.getRegUsername()).isPresent()) {
             throw new RuntimeException("Username already exists");
         }
 
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+        if (userRepository.findByEmail(request.getRegEmail()).isPresent()) {
             throw new RuntimeException("Email already exists");
         }
         User user = new User();
-        user.setEmail(request.getEmail());
-        user.setUsername(Objects.requireNonNull(request.getUsername()));
-        user.setPassword(Objects.requireNonNull(passwordEncoder.encode(request.getPassword())));
+        user.setEmail(request.getRegEmail());
+        user.setUsername(Objects.requireNonNull(request.getRegUsername()));
+        user.setPassword(Objects.requireNonNull(passwordEncoder.encode(request.getRegPassword())));
         user.setEnabled(true);
         user.setCreatedAt(Instant.now());
         userRepository.save(user);
     }
 
+//    public void savePassword(String myid,String newpass){
+//        Optional<User> user = userRepository.findByUsername(myid);
+//        user.setPassword(Objects.requireNonNull(passwordEncoder.encode(myid)));
+//
+//
+//    }
     public List<User> getAll() {
         return userRepository.findAll();
     }
@@ -71,5 +78,9 @@ public class UserService {
 
     public Optional<User> findByID(String myid) {
         return userRepository.findById(myid);
+    }
+
+    public void saveUser(User old) {
+
     }
 }

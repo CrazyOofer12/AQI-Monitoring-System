@@ -3,6 +3,7 @@ package com.aqi.backend.controller;
 import com.aqi.backend.model.RegistrationRequest;
 import com.aqi.backend.model.User;
 import com.aqi.backend.service.UserService;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/profile")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -27,8 +27,9 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    @PostMapping("/register")
-    public ResponseEntity<?> CreateEntry(@RequestBody RegistrationRequest registrationRequest){
+    @PostMapping("/auth/register")
+    public ResponseEntity<?> CreateEntry(RegistrationRequest registrationRequest){
+
         try {
             userService.registerUser(registrationRequest);
             return new ResponseEntity<>(registrationRequest,HttpStatus.CREATED);
@@ -36,7 +37,11 @@ public class UserController {
         catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
     }
+
+
+
 
     @GetMapping("id/{myid}")
     public ResponseEntity<?> getContent(@PathVariable String myid){

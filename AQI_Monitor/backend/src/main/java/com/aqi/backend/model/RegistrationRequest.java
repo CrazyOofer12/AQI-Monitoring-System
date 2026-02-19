@@ -4,43 +4,40 @@ import java.time.Instant;
 
 public class RegistrationRequest {
 
-    private String username;
-    private String email;
-    private String password;
-    private Instant createdAt;
+    private String regUsername;
+    private String regEmail;
+    private String regPassword;
+    private Instant regCreatedAt;
 
-    public String getUsername() {
-        return username;
+    public String getRegUsername() {
+        return regUsername;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setRegUsername(String regUsername) {
+        this.regUsername = regUsername;
     }
 
-    public String getEmail() {
-        return email;
+    public String getRegEmail() {
+        return regEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setRegEmail(String regEmail) {
+        this.regEmail = regEmail;
     }
 
-    public String getPassword() {
-        return password;
+    public String getRegPassword() {
+        return regPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setRegPassword(String regPassword) {
+        this.regPassword = regPassword;
     }
 
-    public Instant getCreatedAt() {
-        return createdAt;
+    public Instant getRegCreatedAt() {
+        return regCreatedAt;
     }
 
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
+    public void setRegCreatedAt(Instant regCreatedAt) {
+        this.regCreatedAt = regCreatedAt;
     }
-
-
-    // getters / setters
 }

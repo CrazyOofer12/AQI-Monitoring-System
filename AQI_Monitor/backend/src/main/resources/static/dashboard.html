@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AQI Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 16px;
+            width: 420px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .username {
+            font-size: 20px;
+            margin: 20px 0;
+            color: #38bdf8;
+        }
+
+        button {
+            margin-top: 30px;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #22c55e, #eab308, #ef4444);
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Welcome 👋</h1>
+
+    <div>
+        Logged in as:
+        <div class="username" id="username">Loading...</div>
+    </div>
+
+    <button onclick="logout()">Logout</button>
+</div>
+
+<script>
+    // Fetch logged-in user
+    fetch("/auth/me")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("username").innerText = data.username;
+        })
+        .catch(() => {
+            document.getElementById("username").innerText = "Error loading user";
+        });
+
+    // Logout function
+    function logout() {
+        fetch("/logout", {
+            method: "POST"
+        }).then(() => {
+            window.location.href = "/login.html";
+        });
+    }
+</script>
+
+</body>
+</html>
