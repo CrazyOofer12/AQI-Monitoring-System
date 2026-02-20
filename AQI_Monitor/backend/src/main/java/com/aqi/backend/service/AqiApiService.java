@@ -8,6 +8,7 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
@@ -48,8 +49,6 @@ public class AqiApiService {
                 .bodyToMono(String.class)
                 .block();
 
-        System.out.println(response);
-
         try {
             return objectMapper.readValue(response, GovernmentApiResponse.class);
         } catch (Exception e) {
@@ -59,6 +58,7 @@ public class AqiApiService {
         }
     }
 
+    @Transactional
     public void storeAqiData(GovernmentApiResponse response) {
 
         Map<String, LocationData> locationMap = new HashMap<>();

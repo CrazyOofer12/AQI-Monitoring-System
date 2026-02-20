@@ -15,7 +15,5 @@ public class AqiApplication {
         Dotenv dotenv = Dotenv.load();
         System.setProperty("GOVT_API_KEY",dotenv.get("GOVT_API_KEY"));
         SpringApplication.run(com.aqi.backend.AqiApplication.class, args);
-
     }
-
 }
