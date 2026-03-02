@@ -38,6 +38,7 @@ h2{
     font-size: 2em;
     color: #fff;
     text-align: center;
+    font-family: 'Lora', serif;
 }
 .input-box{
     position: relative;
@@ -83,20 +84,23 @@ h2{
 
 }
 .remember{
-    margin: -15px 0 15px;
-    font-size: .9cm;
+    margin: -20px 0 20px;
+    font-size: .5cm;
     color: #fff;
     display:  flex;
     justify-content: space-between;
+    
 
 }
 .remember label input{
     margin-right: 3px;
+    padding-bottom: 5px;
     
 }
 .remember a{
         color: #fff;
         text-decoration: none;
+        margin: -15px 0 15px;
 }
 .remember a:hover{
     text-decoration: underline;
@@ -112,6 +116,7 @@ button{
     font-size: 1em;
     color: black;
     font-weight: 500;
+    margin:10px;
 }
 .register-link{
     font-size: .9em;

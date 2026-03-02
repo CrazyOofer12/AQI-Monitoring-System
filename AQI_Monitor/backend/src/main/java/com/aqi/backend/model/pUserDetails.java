@@ -15,13 +15,11 @@ public class pUserDetails implements UserDetails {
         this.user = user;
     }
 
-    // ✅ No roles / authorities
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.emptyList();
     }
 
-    // ✅ Email = login identifier
     @SuppressWarnings("NullableProblems")
     @Override
     public String getUsername() {

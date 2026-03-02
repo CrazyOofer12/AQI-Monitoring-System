@@ -3,7 +3,6 @@ package com.aqi.backend.controller;
 import com.aqi.backend.model.RegistrationRequest;
 import com.aqi.backend.model.User;
 import com.aqi.backend.service.UserService;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

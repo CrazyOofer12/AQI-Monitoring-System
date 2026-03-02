@@ -2,6 +2,7 @@ package com.aqi.backend.model;
 
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -18,8 +19,17 @@ public class LocationData {
     private String city;
     private String station;
     private String lastUpdate;
-    private String latitude;
-    private String longitude;
+    private GeoJsonPoint location;
+
+    public GeoJsonPoint getLocation() {
+        return location;
+    }
+
+    public void setLocation(GeoJsonPoint location) {
+        this.location = location;
+    }
+
+
 
     private List<Pollutant> pollutants;
 
@@ -37,12 +47,6 @@ public class LocationData {
 
     public String getLastUpdate() { return lastUpdate; }
     public void setLastUpdate(String lastUpdate) { this.lastUpdate = lastUpdate; }
-
-    public String getLatitude() { return latitude; }
-    public void setLatitude(String latitude) { this.latitude = latitude; }
-
-    public String getLongitude() { return longitude; }
-    public void setLongitude(String longitude) { this.longitude = longitude; }
 
     public List<Pollutant> getPollutants() { return pollutants; }
     public void setPollutants(List<Pollutant> pollutants) { this.pollutants = pollutants; }

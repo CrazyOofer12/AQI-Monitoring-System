@@ -7,16 +7,15 @@ import com.aqi.backend.repository.AQIRepo;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
-import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 @Component
 public class AqiApiService {
     private final WebClient webClient;
@@ -49,6 +48,8 @@ public class AqiApiService {
                 .bodyToMono(String.class)
                 .block();
 
+
+
         try {
             return objectMapper.readValue(response, GovernmentApiResponse.class);
         } catch (Exception e) {
@@ -76,8 +77,7 @@ public class AqiApiService {
                 record.setState(node.getState());
                 record.setCity(city);
                 record.setStation(station);
-                record.setLatitude(node.getLatitude());
-                record.setLongitude(node.getLongitude());
+                record.setLocation(new GeoJsonPoint(Double.parseDouble(node.getLatitude()),Double.parseDouble(node.getLongitude())));
                 record.setLastUpdate(node.getLastUpdate());
                 record.setPollutants(new ArrayList<>());
             }
