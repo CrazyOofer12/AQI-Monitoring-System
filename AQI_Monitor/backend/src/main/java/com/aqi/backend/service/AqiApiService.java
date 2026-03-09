@@ -1,8 +1,6 @@
 package com.aqi.backend.service;
 
-import com.aqi.backend.model.GovernmentApiResponse;
-import com.aqi.backend.model.GovtRecord;
-import com.aqi.backend.model.LocationData;
+import com.aqi.backend.model.*;
 import com.aqi.backend.repository.AQIRepo;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +75,7 @@ public class AqiApiService {
                 record.setState(node.getState());
                 record.setCity(city);
                 record.setStation(station);
-                record.setLocation(new GeoJsonPoint(Double.parseDouble(node.getLatitude()),Double.parseDouble(node.getLongitude())));
+                record.setLocation(new GeoJsonPoint(Double.parseDouble(node.getLongitude()), Double.parseDouble(node.getLatitude())));
                 record.setLastUpdate(node.getLastUpdate());
                 record.setPollutants(new ArrayList<>());
             }
@@ -90,14 +88,21 @@ public class AqiApiService {
 
             record.getPollutants().add(pollutant);
 
+
             locationMap.put(key, record);
         }
 
+
         for (LocationData record : locationMap.values()) {
+            Result result = AqiService.calculateAQI(record);
+            record.setAqi(result.getMaxAqi());
+            record.setDominant(result.getDominant());
             repository.findByStationAndCity(record.getStation(), record.getCity())
                     .ifPresentOrElse(existing -> {
                         existing.setPollutants(record.getPollutants());
                         existing.setLastUpdate(record.getLastUpdate());
+                        existing.setAqi(record.getAqi());
+                        existing.setDominant(record.getDominant());
                         repository.save(existing);
                     }, () -> repository.save(record));
         }

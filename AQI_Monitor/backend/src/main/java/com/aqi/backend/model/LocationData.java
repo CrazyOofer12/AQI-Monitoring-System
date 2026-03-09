@@ -3,6 +3,8 @@ package com.aqi.backend.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -19,19 +21,39 @@ public class LocationData {
     private String city;
     private String station;
     private String lastUpdate;
+
+    @GeoSpatialIndexed(type= GeoSpatialIndexType.GEO_2DSPHERE)
     private GeoJsonPoint location;
 
-    public GeoJsonPoint getLocation() {
+    private GeoJsonPoint getLocation() {
         return location;
     }
+
+    private List<Pollutant> pollutants;
+
+    private int Aqi;
+
+    private String dominant;
 
     public void setLocation(GeoJsonPoint location) {
         this.location = location;
     }
 
+    public int getAqi() {
+        return Aqi;
+    }
 
+    public void setAqi(int aqi) {
+        Aqi = aqi;
+    }
 
-    private List<Pollutant> pollutants;
+    public String getDominant() {
+        return dominant;
+    }
+
+    public void setDominant(String dominant) {
+        this.dominant = dominant;
+    }
 
     public String getCountry() { return country; }
     public void setCountry(String country) { this.country = country; }
@@ -69,5 +91,7 @@ public class LocationData {
         public String getAvgValue() { return avgValue; }
         public void setAvgValue(String avgValue) { this.avgValue = avgValue; }
     }
+
+
 
 }

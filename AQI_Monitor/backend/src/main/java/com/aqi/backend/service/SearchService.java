@@ -18,15 +18,14 @@ public class SearchService {
         this.repository = repository;
     }
 
-    public LocationData nearestCoordinates(double userLat, double userLon){
-        GeoJsonPoint userLocation = new GeoJsonPoint(userLon,userLat);
+    public LocationData nearestCoordinates(GeoJsonPoint geoJsonPoint){
         Distance maxdistance = new Distance(200, Metrics.KILOMETERS);
 
-        return repository.findFirstByLocationNear(userLocation,maxdistance);
+        return repository.findFirstByLocationNear(geoJsonPoint,maxdistance);
     }
-//    public int findAQI(String station,String city){
-//        return repository.findByStationAndCity(station,city);
-//
+//    public int findAQI(LocationData nearest){
+//        List<?> l = new ArrayList<>(nearest.getPollutants());
+//        for(l:)
 //    }
 
 
