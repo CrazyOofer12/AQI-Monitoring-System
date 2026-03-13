@@ -6,6 +6,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface AutocompleteRepo extends MongoRepository <City,String> {
-    List<City> findByCityStartingWithIgnoreCase(String prefix);
+    List<City> findTop5ByCityStartingWithIgnoreCase(String prefix);
 
 }

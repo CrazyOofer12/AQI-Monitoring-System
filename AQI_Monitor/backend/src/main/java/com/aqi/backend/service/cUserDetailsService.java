@@ -25,6 +25,9 @@ public class cUserDetailsService implements UserDetailsService {
                     System.out.println("USER NOT FOUND");
                     return new UsernameNotFoundException("User not found");
                 });
+        if(user==null){
+            throw new UsernameNotFoundException("User not found");
+        }
 
         System.out.println("USER FOUND");
         System.out.println(STR."Stored password: \{user.getPassword()}");

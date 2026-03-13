@@ -1,5 +1,6 @@
 package com.aqi.backend.config;
 
+import com.aqi.backend.service.AuthFailureHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,8 @@ public class SecurityConfig {
     private cUserDetailsService userDetailsService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AuthFailureHandler authFailureHandler;
 
 
     @Bean
@@ -44,7 +47,8 @@ public class SecurityConfig {
                                 "/auth/register",
                                 "/css/**",
                                 "/js/**",
-                                "/images/**"
+                                "/images/**",
+                                "/verify-email.html"
                         ).permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .anyRequest().authenticated()
@@ -54,7 +58,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/dashboard.html", true)
-                        .failureUrl("/login?error=true")
+                        .failureHandler(authFailureHandler)
                         .permitAll()
                 )
 

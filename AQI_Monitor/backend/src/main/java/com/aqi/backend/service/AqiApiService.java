@@ -6,6 +6,7 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -22,6 +23,7 @@ public class AqiApiService {
 
 
     @Autowired
+
     public AqiApiService(WebClient webClient, AQIRepo repository, ObjectMapper objectMapper) {
         this.webClient = webClient;
         this.repository = repository;
@@ -33,6 +35,7 @@ public class AqiApiService {
     @Value("${govt.api.key}")
     private String apiKey;
 
+    @Async
     public @Nullable GovernmentApiResponse fetchAqiData() {
 
         String response = webClient.get()

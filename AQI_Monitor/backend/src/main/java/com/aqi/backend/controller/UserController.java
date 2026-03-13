@@ -8,24 +8,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
-    private ResponseEntity<?>  getAll(){
-        List<User> l = userService.getAll();
-        if (!l.isEmpty()){
-            return new ResponseEntity<>(l,HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+
     @PostMapping("/auth/register")
     public ResponseEntity<?> CreateEntry(RegistrationRequest registrationRequest){
 
@@ -38,9 +29,6 @@ public class UserController {
         }
 
     }
-
-
-
 
     @GetMapping("id/{myid}")
     public ResponseEntity<?> getContent(@PathVariable String myid){
@@ -67,5 +55,10 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @PostMapping("/forgot-password")
+    public String forgotPassword(@RequestParam String email){
+        String token = UUID.randomUUID().toString();
+        return token;
+    }
 
 }

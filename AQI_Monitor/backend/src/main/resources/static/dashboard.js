@@ -28,7 +28,7 @@ async function fetchCities(query) {
 
     try {
 
-        const response = await fetch(`/autocomplete?query=${query}`);
+        const response = await fetch(`/autocomplete?query=${query}`,{headers:{"X-Requested-With":"XMLHttpRequest"}});
         const data = await response.json();
 
         suggestionsBox.innerHTML = "";

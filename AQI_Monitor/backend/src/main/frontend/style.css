@@ -21,7 +21,7 @@ section{
     align-items: center;
     width: 100%;
     min-height: 100vh;
-    background: url("aqi-bg.webp") no-repeat;
+    background: url("**/images/aqi-bg.webp") no-repeat;
     background-size: cover;
     background-position: center;
 }

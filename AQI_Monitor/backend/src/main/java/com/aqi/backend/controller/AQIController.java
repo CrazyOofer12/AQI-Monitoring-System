@@ -1,9 +1,7 @@
 package com.aqi.backend.controller;
 
-import com.aqi.backend.model.AqiCalculator;
 import com.aqi.backend.model.LocationData;
 import com.aqi.backend.repository.AutocompleteRepo;
-import com.aqi.backend.service.AqiService;
 import com.aqi.backend.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
@@ -23,6 +21,7 @@ public class AQIController {
 
 
     @GetMapping("/Aqi")
+
     public ResponseEntity<?> giveAQI(@RequestParam String lat,@RequestParam String lon){
         GeoJsonPoint g = new GeoJsonPoint(Double.parseDouble(lon),Double.parseDouble(lat));
         LocationData l = service.nearestCoordinates(g);

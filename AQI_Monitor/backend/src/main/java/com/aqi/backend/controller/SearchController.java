@@ -1,6 +1,5 @@
 package com.aqi.backend.controller;
 
-import com.aqi.backend.model.LocationData;
 import com.aqi.backend.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;

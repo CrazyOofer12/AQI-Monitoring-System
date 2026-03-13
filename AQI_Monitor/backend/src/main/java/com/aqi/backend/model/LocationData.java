@@ -6,12 +6,12 @@ import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-
+import java.io.Serializable;
 import java.util.List;
 
 
 @Document(collection = "places")
-public class LocationData {
+public class LocationData implements Serializable {
 
     @Id
     private String id;
@@ -73,7 +73,7 @@ public class LocationData {
     public List<Pollutant> getPollutants() { return pollutants; }
     public void setPollutants(List<Pollutant> pollutants) { this.pollutants = pollutants; }
 
-    public static class Pollutant {
+    public static class Pollutant implements Serializable{
         private String pollutantId;
         private String minValue;
         private String maxValue;

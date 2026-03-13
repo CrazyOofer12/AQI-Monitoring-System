@@ -5,8 +5,11 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
+
+
 @Document(collection = "city_cache")
-public class City {
+public class City implements Serializable {
     @Id
     private String id;
 

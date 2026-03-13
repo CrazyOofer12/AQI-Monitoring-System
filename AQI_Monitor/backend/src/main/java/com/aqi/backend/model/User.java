@@ -22,7 +22,7 @@ public class User {
     @NonNull
     private String email;
 
-    private boolean enabled = true;
+    private boolean enabled = false;
     private boolean isAdmin = false;
 
     @CreatedDate

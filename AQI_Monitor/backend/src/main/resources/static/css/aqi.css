@@ -19,11 +19,7 @@
 
 body{
   margin:0;
-  background: url("/images/aqi-bg.webp") no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
+  background:url("../images/aqi-bg.webp") center/cover no-repeat fixed;
   color:var(--text);
   min-height:100vh;
   display:flex;
@@ -36,9 +32,11 @@ body{
 .container{
   width:100%;
   max-width:980px;
-  display:grid;
+  display:flex;
   grid-template-columns:1fr 1fr;
-  background:var(--card);
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
   border-radius:18px;
   overflow:hidden;
   box-shadow:0 20px 60px rgba(0,0,0,.6);
@@ -53,14 +51,17 @@ body{
 
 .info{
   padding:40px;
-  background:rgba(2,6,23,.85);
   backdrop-filter:blur(8px);
 }
 
-h1{margin:0 0 10px 0}
+h1{
+  margin:0 0 10px 0;
+  color:beige
+
+}
 
 .subtitle{
-  color:var(--muted);
+  color:#fff;
   margin-bottom:28px;
 }
 
@@ -86,24 +87,26 @@ h1{margin:0 0 10px 0}
 
 .form-area{
   padding:40px;
-  background:rgba(2,6,23,.92);
   backdrop-filter:blur(12px);
+  color: #fff;
 }
 
 label{
   display:block;
   margin:14px 0 6px;
   font-size:14px;
-  color:var(--muted);
+  color: #fff;
 }
 
 input,select{
   width:100%;
   padding:12px 14px;
   border-radius:10px;
-  border:1px solid #1f2937;
-  background:#020617;
-  color:var(--text);
+  background: rgba(255, 255, 255, 0.492);
+  border:0px;
+  box-shadow: inset 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
+
+  color:#fff;
   outline:none;
   transition:.2s;
 }
@@ -122,16 +125,16 @@ button{
   border-radius:12px;
   border:none;
   font-weight:600;
-  background:linear-gradient(90deg,var(--good),var(--moderate),var(--usg),var(--unhealthy));
   color:#020617;
   cursor:pointer;
   transition:.25s;
+  background-color: beige;
 }
 
 button:hover{
-  transform:translateY(-1px);
-  filter:brightness(1.05);
+    background-color: rgb(99, 243, 99);
 }
+
 
 /* Footer login link */
 
@@ -139,7 +142,7 @@ button:hover{
   text-align:center;
   margin-top:16px;
   font-size:13px;
-  color:var(--muted);
+  color:#fff;
 }
 
 .login-link{
