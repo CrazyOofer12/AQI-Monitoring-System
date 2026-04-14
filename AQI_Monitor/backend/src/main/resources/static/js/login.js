@@ -14,3 +14,5 @@ function togglePassword()
         icon.setAttribute("name","eye-off");
     }
 }
+
+

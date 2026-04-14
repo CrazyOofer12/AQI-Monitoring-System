@@ -130,3 +130,15 @@ button{
 .register-link p a:hover{
     text-decoration:underline;
 }
+
+.login-error {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    margin-top:12px;
+    font-size: 14px;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    text-align: center;
+}

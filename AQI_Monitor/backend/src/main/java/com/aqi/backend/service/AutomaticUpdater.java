@@ -18,6 +18,9 @@ public class AutomaticUpdater {
     private AqiApiService govtApiService;
 
     @Autowired
+    private MapService mapService;
+
+    @Autowired
     private MetadataRepo metadataRepository;
 
     @Scheduled(fixedRate = 60 * 60 * 1000) // every hour
@@ -35,6 +38,7 @@ public class AutomaticUpdater {
 
             if (diff.toMinutes() < 60) {
                 System.out.println("Skipping AQI update (recently updated)");
+                mapService.refreshMapCache();
                 return;
             }
         }
@@ -42,6 +46,8 @@ public class AutomaticUpdater {
         System.out.println("Fetching fresh AQI data...");
 
         govtApiService.fetchandsave();
+
+        mapService.refreshMapCache();
 
         Metadata newMetadata = new Metadata();
         newMetadata.setId(METADATA_ID);

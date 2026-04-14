@@ -25,7 +25,7 @@ public class LocationData implements Serializable {
     @GeoSpatialIndexed(type= GeoSpatialIndexType.GEO_2DSPHERE)
     private GeoJsonPoint location;
 
-    private GeoJsonPoint getLocation() {
+    public GeoJsonPoint getLocation() {
         return location;
     }
 

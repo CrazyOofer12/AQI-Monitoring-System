@@ -1,6 +1,33 @@
 const searchInput = document.getElementById("citySearch");
 const suggestionsBox = document.getElementById("searchSuggestions");
 
+const products = [
+    {
+        name: "3M N95 Mask",
+        price: "₹569",
+        image: "images/3M_N95.jpg",
+        link: "https://www.amazon.in/s?k=3m+n95"
+    },
+    {
+        name: "Reusable N95 Mask",
+        price: "₹299",
+        image: "images/N95.jpg",
+        link: "https://www.amazon.in/s?k=n95+mask"
+    },
+    {
+        name: "LEVOIT Air Purifier",
+        price: "₹9,999",
+        image: "images/purifier.webp",
+        link: "https://www.amazon.in/s?k=levoit+air+purifier"
+    },
+    {
+        name: "Coway Airmega 150",
+        price: "₹15,998",
+        image: "images/Coway_purifier.jpg",
+        link: "https://www.amazon.in/s?k=coway+air+purifier"
+    }
+];
+
 let debounceTimer;
 
 /* Listen for typing */
@@ -22,8 +49,74 @@ searchInput.addEventListener("input", function () {
     }, 100);
 });
 
+document.addEventListener("DOMContentLoaded", () => {
 
-/* Fetch city suggestions */
+    const tooltip = document.getElementById("tooltip");
+
+
+    document.querySelectorAll(".pollutant-card").forEach(card => {
+
+        card.addEventListener("mouseenter", () => {
+            tooltip.innerText = card.getAttribute("data-info");
+            tooltip.style.opacity = 1;
+        });
+
+        card.addEventListener("mousemove", (e) => {
+            tooltip.style.left = e.pageX + 15 + "px";
+            tooltip.style.top = e.pageY + 15 + "px";
+        });
+
+        card.addEventListener("mouseleave", () => {
+            tooltip.style.opacity = 0;
+        });
+
+    });
+
+});
+
+function createProductCard(p) {
+    return `
+        <div class="product-card">
+            <img src="${p.image}" class="product-img" alt="${p.name}">
+            <div class="product-info">
+                <div class="product-title">${p.name}</div>
+                <div class="product-price">${p.price}</div>
+                <a href="${p.link}" target="_blank" class="buy-btn">Buy</a>
+            </div>
+        </div>
+    `;
+}
+
+function renderHealthProducts(aqi) {
+
+    const container = document.getElementById("productRecommendations");
+    const healthContent = document.querySelector(".health-content");
+
+    container.innerHTML = "";
+
+    if (aqi < 120) {
+        healthContent.style.display = "block";
+        container.style.display = "none";
+        return;
+    }
+
+    healthContent.style.display = "none";
+    container.style.display = "grid";
+
+    products.slice(0, 4).forEach(p => {
+        container.innerHTML += `
+            <div class="amazon-card">
+                <img src="${p.image}" alt="${p.name}">
+                <div class="amazon-overlay">
+                    <div class="amazon-title">${p.name}</div>
+                    <div class="amazon-price">${p.price}</div>
+                    <a href="${p.link}" target="_blank" class="amazon-btn">Buy</a>
+                </div>
+            </div>
+        `;
+    });
+}
+
 async function fetchCities(query) {
 
     try {
@@ -111,6 +204,9 @@ item.addEventListener("click", () => {
     fetchAQI(lat, lon);
 
 });
+
+
+
 async function fetchAQI(lat, lon) {
 
     try {
@@ -121,8 +217,11 @@ async function fetchAQI(lat, lon) {
         const data = await response.json();
 
         updateDashboard(data);
+        renderHealthProducts(data.Aqi);
 
         document.getElementById("loadingOverlay").style.display = "none";
+
+
 
     } catch (error) {
         console.error("AQI fetch error:", error);
@@ -223,11 +322,12 @@ function LoadUser(){
         });
 }
 
-    // Logout function
-    function logout() {
-        fetch("/logout", {
-            method: "POST"
-        }).then(() => {
-            window.location.href = "/login.html";
-        });
-    }
+// Logout function
+function logout() {
+    fetch("/logout", {
+        method: "POST"
+    }).then(() => {
+        window.location.href = "/login.html";
+    });
+}
+

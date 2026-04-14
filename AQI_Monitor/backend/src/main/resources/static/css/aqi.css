@@ -35,7 +35,7 @@ body{
   display:flex;
   grid-template-columns:1fr 1fr;
   background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  border: 0px solid rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(10px);
   border-radius:18px;
   overflow:hidden;

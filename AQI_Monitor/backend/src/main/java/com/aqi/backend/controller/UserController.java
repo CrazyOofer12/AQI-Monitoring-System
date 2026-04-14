@@ -6,26 +6,27 @@ import com.aqi.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 import java.util.UUID;
 
-@RestController
+@Controller
 public class UserController {
     @Autowired
     private UserService userService;
 
 
     @PostMapping("/auth/register")
-    public ResponseEntity<?> CreateEntry(RegistrationRequest registrationRequest){
+    public String CreateEntry(RegistrationRequest registrationRequest){
 
         try {
             userService.registerUser(registrationRequest);
-            return new ResponseEntity<>(registrationRequest,HttpStatus.CREATED);
+            return "redirect:/login.html";
         }
         catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return "redirect:/error.html";
         }
 
     }
