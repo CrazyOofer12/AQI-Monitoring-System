@@ -10,6 +10,8 @@ services:
         value: 8080
       - key: GOVT_API_KEY
         value: 579b464db66ec23bdd000001cdc3b564546246a772a26393094f5645
+      - key: SPRING_DATA_MONGODB_URI
+        sync: false
       - key: SPRING_REDIS_HOST
         fromService:
           type: redis
