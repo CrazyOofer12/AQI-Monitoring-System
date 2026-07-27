@@ -1,0 +1,125 @@
+package com.aqi.backend.service;
+
+import com.aqi.backend.model.*;
+import com.aqi.backend.repository.AQIRepo;
+import com.aqi.backend.repository.AutocompleteRepo;
+import org.jspecify.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
+import tools.jackson.databind.ObjectMapper;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+@Component
+public class AqiApiService {
+    private final WebClient webClient;
+    private final AQIRepo repository;
+    private final ObjectMapper objectMapper;
+
+    @Autowired
+    private AutocompleteRepo autocompleteRepo;
+
+    @Autowired
+    public AqiApiService(WebClient webClient, AQIRepo repository, ObjectMapper objectMapper) {
+        this.webClient = webClient;
+        this.repository = repository;
+        this.objectMapper = objectMapper;
+    }
+
+    @Value("${govt.api.url}")
+    private String apiUrl;
+
+    @Value("${govt.api.key}")
+    private String apiKey;
+
+    @Async
+    public @Nullable GovernmentApiResponse fetchAqiData() {
+        String response = webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(apiUrl)
+                        .queryParam("api-key", apiKey)
+                        .queryParam("format", "json")
+                        .queryParam("limit", "all")
+                        .build())
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        try {
+            return objectMapper.readValue(response, GovernmentApiResponse.class);
+        } catch (Exception e) {
+            System.out.println("RAW RESPONSE:");
+            System.out.println(response);
+            throw new RuntimeException("API did not return valid JSON", e);
+        }
+    }
+
+    @Transactional
+    public void storeAqiData(GovernmentApiResponse response) {
+        Map<String, LocationData> locationMap = new HashMap<>();
+
+        for (GovtRecord node : response.getRecords()) {
+            String station = node.getStation();
+            String city = node.getCity();
+            String key = station + "|" + city;
+
+            LocationData record = locationMap.getOrDefault(key, new LocationData());
+
+            if (!locationMap.containsKey(key)) {
+                record.setCountry(node.getCountry());
+                record.setState(node.getState());
+                record.setCity(city);
+                record.setStation(station);
+                record.setLocation(new GeoJsonPoint(Double.parseDouble(node.getLongitude()), Double.parseDouble(node.getLatitude())));
+                record.setLastUpdate(node.getLastUpdate());
+                record.setPollutants(new ArrayList<>());
+            }
+
+            LocationData.Pollutant pollutant = new LocationData.Pollutant();
+            pollutant.setPollutantId(node.getPollutantId());
+            pollutant.setMinValue(node.getMinValue());
+            pollutant.setMaxValue(node.getMaxValue());
+            pollutant.setAvgValue(node.getAvgValue());
+
+            record.getPollutants().add(pollutant);
+            locationMap.put(key, record);
+        }
+
+        for (LocationData record : locationMap.values()) {
+            Result result = AqiService.calculateAQI(record);
+            record.setAqi(result.getMaxAqi());
+            record.setDominant(result.getDominant());
+
+            repository.findByStationAndCity(record.getStation(), record.getCity())
+                    .ifPresentOrElse(existing -> {
+                        existing.setPollutants(record.getPollutants());
+                        existing.setLastUpdate(record.getLastUpdate());
+                        existing.setAqi(record.getAqi());
+                        existing.setDominant(record.getDominant());
+                        repository.save(existing);
+                    }, () -> repository.save(record));
+
+            if (record.getCity() != null && !record.getCity().isEmpty()) {
+                City c = new City();
+                c.setId(record.getCity().replaceAll("\\s+", "_") + "_" + (record.getState() != null ? record.getState().replaceAll("\\s+", "_") : ""));
+                c.setCity(record.getCity());
+                c.setState(record.getState());
+                c.setLocation(record.getLocation());
+                autocompleteRepo.save(c);
+            }
+        }
+
+        System.out.println("AQI data saved/updated: " + locationMap.size() + " locations & city cache updated.");
+    }
+
+    public void fetchandsave(){
+        storeAqiData(fetchAqiData());
+    }
+}

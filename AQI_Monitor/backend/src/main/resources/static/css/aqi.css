@@ -1,0 +1,229 @@
+/* AQI Register Light Theme CSS */
+:root {
+    --bg-main: #f8fafc;
+    --bg-gradient: linear-gradient(135deg, #f0f9ff 0%, #f8fafc 50%, #e0f2fe 100%);
+    --card-bg: #ffffff;
+    --info-bg: #f1f5f9;
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --border-color: #e2e8f0;
+    --font-primary: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+    /* AQI Colors */
+    --aqi-good: #22c55e;
+    --aqi-satisfactory: #84cc16;
+    --aqi-moderate: #eab308;
+    --aqi-poor: #f97316;
+    --aqi-very-poor: #ef4444;
+    --aqi-severe: #991b1b;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-primary);
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: var(--bg-gradient);
+    color: var(--text-primary);
+    padding: 24px;
+}
+
+.register-wrapper {
+    width: 100%;
+    max-width: 860px;
+}
+
+.register-card {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 12px 36px -8px rgba(15, 23, 42, 0.08);
+}
+
+@media (max-width: 768px) {
+    .register-card {
+        grid-template-columns: 1fr;
+    }
+    .info-side {
+        padding: 28px !important;
+    }
+}
+
+.info-side {
+    background: var(--info-bg);
+    padding: 44px 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid var(--border-color);
+}
+
+.brand-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.info-side h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    line-height: 1.3;
+}
+
+.info-side .subtitle {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 30px;
+}
+
+.aqi-scale-widget {
+    background: #ffffff;
+    padding: 18px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.scale-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.scale-bar {
+    height: 14px;
+    border-radius: 8px;
+    display: flex;
+    overflow: hidden;
+    gap: 2px;
+}
+
+.scale-bar div {
+    flex: 1;
+}
+
+.scale-bar .g { background: var(--aqi-good); }
+.scale-bar .m { background: var(--aqi-satisfactory); }
+.scale-bar .u { background: var(--aqi-moderate); }
+.scale-bar .un { background: var(--aqi-poor); }
+.scale-bar .v { background: var(--aqi-very-poor); }
+.scale-bar .h { background: var(--aqi-severe); }
+
+.scale-legend {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 8px;
+    font-weight: 500;
+}
+
+.form-side {
+    padding: 44px 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-side h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.form-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+}
+
+#registerForm {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.input-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.input-field label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.input-field input {
+    height: 44px;
+    background: #f8fafc;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 0 14px;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.input-field input:focus {
+    background: #ffffff;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.btn-submit {
+    height: 46px;
+    background: var(--primary-color);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 8px;
+}
+
+.btn-submit:hover {
+    background: var(--primary-hover);
+}
+
+.card-footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.login-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification - Air Quality Monitor</title>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #f0f9ff 0%, #f8fafc 50%, #e0f2fe 100%);
+            --card-bg: #ffffff;
+            --text-primary: #0f172a;
+            --text-muted: #64748b;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --border: #e2e8f0;
+            --font-family: 'Outfit', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-family);
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: var(--bg-gradient);
+            padding: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 40px 32px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.05);
+        }
+
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e2e8f0;
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 24px auto;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        .message {
+            font-size: 0.9375rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .success {
+            color: #166534;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .error {
+            color: #991b1b;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .btn-action {
+            margin-top: 20px;
+            padding: 12px 24px;
+            border: none;
+            background: var(--primary);
+            color: white;
+            border-radius: 10px;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .btn-action:hover {
+            background: var(--primary-hover);
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="brand-badge">
+        <svg width="28" height="28" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="18" fill="#2563eb" fill-opacity="0.15"/>
+            <path d="M20 8C13.4 8 8 13.4 8 20C8 26.6 13.4 32 20 32C26.6 32 32 26.6 32 20C32 13.4 26.6 8 20 8ZM20 28C15.6 28 12 24.4 12 20C12 15.6 15.6 12 20 12C24.4 12 28 15.6 28 20C28 24.4 24.4 28 20 28Z" fill="#2563eb"/>
+            <circle cx="20" cy="20" r="4" fill="#0284c7"/>
+        </svg>
+        <span>AQI Monitor</span>
+    </div>
+
+    <h2>Email Verification</h2>
+
+    <div id="spinner" class="spinner"></div>
+    <p id="message" class="message">Verifying your account details...</p>
+
+    <button id="loginBtn" class="btn-action" onclick="goLogin()" style="display:none;">
+        Proceed to Login
+    </button>
+</div>
+
+<script>
+    function getToken(){
+        const params = new URLSearchParams(window.location.search);
+        return params.get("token");
+    }
+
+    async function verifyAccount(){
+        const token = getToken();
+
+        if(!token){
+            showError("Invalid or missing verification link");
+            return;
+        }
+
+        try {
+            const response = await fetch("/verify?token=" + encodeURIComponent(token));
+            const text = await response.text();
+
+            if(response.ok){
+                showSuccess(text);
+            } else {
+                showError(text);
+            }
+        } catch(e){
+            showError("Unable to contact server. Please try again.");
+        }
+    }
+
+    function showSuccess(msg){
+        document.getElementById("spinner").style.display = "none";
+        const message = document.getElementById("message");
+        message.innerHTML = msg;
+        message.className = "message success";
+        document.getElementById("loginBtn").style.display = "inline-block";
+    }
+
+    function showError(msg){
+        document.getElementById("spinner").style.display = "none";
+        const message = document.getElementById("message");
+        message.innerHTML = msg;
+        message.className = "message error";
+    }
+
+    function goLogin(){
+        window.location.href = "/login.html";
+    }
+
+    verifyAccount();
+</script>
+
+</body>
+</html>

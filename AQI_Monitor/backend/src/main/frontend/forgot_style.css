@@ -1,0 +1,70 @@
+:root{
+  --good:#00e400;
+  --moderate:#ffff00;
+  --usg:#ff7e00;
+  --unhealthy:#ff0000;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --accent:#38bdf8;
+  --card:#1e293b;
+}
+
+*{box-sizing:border-box;font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif}
+
+body{
+  margin:0;
+  background:url("aqi-bg.webp") center/cover no-repeat fixed;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--text);
+}
+
+.container{width:100%;max-width:420px;padding:20px}
+
+.card{
+  background:rgba(255, 255, 255, 0.1);
+  backdrop-filter:blur(14px);
+  padding:40px;
+  border-radius:18px;
+  box-shadow:0 20px 60px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.04);
+}
+
+h1{margin-top:0}
+.subtitle{color:#fff;margin-bottom:20px}
+
+label{display:block;margin:14px 0 6px;color:#fff;font-size:14px}
+
+input{
+  width:100%;
+  padding:12px 14px;
+  border-radius:10px;
+  border:1px solid #2a364a;
+  background:rgba(255, 255, 255, 0.1);
+  color:var(--text);
+  outline:none;
+}
+
+input:focus{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+
+button{
+  width:100%;
+  margin-top:22px;
+  padding:14px;
+  border-radius:12px;
+  border:none;
+  font-weight:600;
+  background-color: beige;
+  cursor:pointer;
+}
+button:hover{
+  background-color: rgb(99, 243, 99)
+}
+
+.footer{text-align:center;margin-top:16px;font-size:13px;color:#fff}
+.login-link{color:var(--accent);text-decoration:none;font-weight:600}
+.login-link:hover{text-decoration:underline}
+
+.error{color:#f87171;font-size:13px;margin-top:4px;display:none}
+.success{color:#34d399;text-align:center;margin-top:14px;display:none}

@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: aqi-monitoring-system
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: singapore
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: GOVT_API_KEY
+        value: 579b464db66ec23bdd000001cdc3b564546246a772a26393094f5645
+      - key: SPRING_REDIS_HOST
+        fromService:
+          type: redis
+          name: aqi-redis
+          property: host
+      - key: SPRING_REDIS_PORT
+        fromService:
+          type: redis
+          name: aqi-redis
+          property: port
+
+  - type: redis
+    name: aqi-redis
+    plan: free
+    region: singapore
+    ipAllowList: []
